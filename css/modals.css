@@ -1,0 +1,27 @@
+.drag_handle {
+    cursor: move;
+    float: right;
+    background-image: url(../images/drag_icon_popup.png);
+    width: 22px;
+    height: 22px;
+    margin: 15px;
+}
+
+.modal-header {
+    padding: 0px!important;
+}
+
+.modal-title {
+    width: 80%;
+    float: left;
+    padding: 15px;
+}
+
+.modal-open .modal {
+    top: 0%;
+    overflow: hidden;
+}
+
+.modal-dialog {
+    top: 5%;
+} 

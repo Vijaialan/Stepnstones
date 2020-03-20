@@ -1,0 +1,18 @@
+
+
+.carousel {
+  /*overflow: hidden;*/
+  position: static;
+  width:100%;
+}
+ 
+.carousel:before,
+.carousel:after {
+  content: "";
+  display: table;
+}
+
+.carousel:after {
+  clear: both;
+}
+

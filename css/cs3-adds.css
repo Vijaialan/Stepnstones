@@ -1,0 +1,141 @@
+.projlink:hover {
+  color: blue;
+}
+
+/*sorting css*/
+
+.projects_thead th.asc:after {
+  font-family: FontAwesome;
+  content: "\f0d7";
+  display: inline-block;
+  padding: 0 0.5em;
+}
+
+.projects_thead th.desc:after {
+  font-family: FontAwesome;
+  content: "\f0d8";
+  display: inline-block;
+  padding: 0 0.5em;
+}
+
+.people_thead th.asc:after {
+  font-family: FontAwesome;
+  content: "\f0d7";
+  display: inline-block;
+  padding: 0 0.5em;
+}
+.people_thead th.desc:after {
+  font-family: FontAwesome;
+  content: "\f0d8";
+  display: inline-block;
+  padding: 0 0.5em;
+}
+
+.company_thead th.asc:after {
+  font-family: FontAwesome;
+  content: "\f0d7";
+  display: inline-block;
+  padding: 0 0.5em;
+}
+
+.company_thead th.desc:after {
+  font-family: FontAwesome;
+  content: "\f0d8";
+  display: inline-block;
+  padding: 0 0.5em;
+}
+
+.goal_table th.asc:after {
+  font-family: FontAwesome;
+  content: "\f0d7";
+  display: inline-block;
+  padding: 0 0.5em;
+}
+
+.goal_table th.desc:after {
+  font-family: FontAwesome;
+  content: "\f0d8";
+  display: inline-block;
+  padding: 0 0.5em;
+}
+
+/* searchbar */
+.dir_searchbox {
+  display: inline-block;
+  border: none;
+  border-bottom: 1px solid #d4d4d4;
+  padding: 5px 0px;
+  color: #333333;
+  font-size: 14px;
+  margin-left: 50px;
+}
+
+.dir_searchbox .search_input {
+  border: none;
+  background: transparent;
+}
+
+.dir_searchbox .search_submit {
+  background: none;
+}
+
+.project_status {
+  background: #ff6600;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+div.msgclass {
+  width: 400px;
+  z-index: 2000;
+  display: none;
+  height: 80px;
+  /*
+    border: none;
+    position:absolute;
+    top:50%;
+    margin: 0 auto;
+    padding:2px;
+    */
+  background: #2d4a74;
+  // background: #1111AA;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin: 0 0 0 -150px;
+  align: center;
+  cursor: pointer;
+}
+
+.msgimg {
+  margin-top: 20px;
+  width: 50px;
+  height: 100%;
+  float: left;
+}
+.errimg {
+  margin-top: 20px;
+  width: 50px;
+  height: 100%;
+  float: left;
+}
+
+.msgcont {
+  float: left;
+  align: center;
+  color: white;
+  margin-top: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+
+  vertical-align: top;
+}
+
+.goal_opt {
+  position: relative;
+}
+
+.opt_btn_wrp_top {
+  top: -80px;
+}

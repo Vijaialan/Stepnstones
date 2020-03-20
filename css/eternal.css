@@ -1,0 +1,509 @@
+.primary_cost_sec,
+.critical_cost_sec,
+.stag_stat_sec {
+  margin-bottom: 50px;
+}
+
+.primary_cost_sec .sec_head,
+.critical_cost_sec .sec_head {
+  margin-bottom: 10px;
+}
+
+/* ----------- Primary cost component ------------ */
+.et_primary_cost {
+}
+
+/**/
+
+.et_pricost_table {
+  width: 100%;
+  background: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+  border: 1px solid #e0e0e0;
+  height: 52px;
+}
+
+.et_pricost_table td {
+  padding: 10px;
+}
+
+.et_pricost_table td:nth-child(2) {
+  width: 200px;
+  text-align: right;
+}
+
+.et_pricost_table td:last-child {
+  background: #f2f2f2;
+  width: 230px;
+  text-align: right;
+  border-left: 1px solid #cccccc;
+}
+
+.et_pricost_table .row_action_btn {
+  position: absolute;
+  right: 25px;
+  margin-top: -12px;
+}
+
+.et_pricost_table .row_action_btn button {
+  border: 0;
+  background-color: transparent;
+  margin-left: 15px;
+  background-repeat: no-repeat;
+}
+
+.et_pricost_table .action_btn_1 {
+  background: url(images/action_btn_1.png) -2px 0;
+  width: 24px;
+  height: 22px;
+}
+
+.et_pricost_table .action_btn_2 {
+  background: url(images/action_btn_2.png) -2px 0;
+  width: 24px;
+  height: 22px;
+}
+
+.et_pricost_table .action_btn_3 {
+  background: url(images/action_btn_3.png)-2px 0;
+  width: 20px;
+  height: 22px;
+}
+
+.et_pricost_table .action_btn_4 {
+  background: url(images/action_btn_4.png)-2px 0;
+  width: 10px;
+  height: 22px;
+}
+
+.et_pricost_table .action_btn_5 {
+  background: url(images/action_icons.png)-2px -122px;
+  width: 22px;
+  height: 22px;
+}
+
+.et_pricost_table .active_action_btn_1,
+.et_pricost_table .active_action_btn_2,
+.et_pricost_table .active_action_btn_3,
+.et_pricost_table .active_action_btn_4 {
+  background-position: -2px -21px;
+}
+
+/* -- action btn dropdown -- */
+
+.et_pricost_table .opt_btn_wrp {
+  position: absolute;
+  top: 0px;
+  right: 12px;
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+  display: none;
+  width: 235px;
+  z-index: 1024;
+}
+
+/* ----------- Critical cost component ------------ */
+.measure_head {
+}
+
+.crit_cost_sec {
+  width: 20%;
+}
+
+.cost_driver_sec {
+  width: 15%;
+}
+
+.crit_cost_sec h4,
+.cost_driver_sec h4 {
+  font-family: "Nunito Sans", sans-serif;
+  color: #333;
+  padding: 0 20px;
+  font-size: 14px;
+}
+
+/*----- -----*/
+
+.cost_driver_container {
+  /*height: 200px;*/
+  margin-bottom: 40px;
+}
+
+.crit_cost_wrp {
+  background: #2b4b74;
+  width: 20%;
+  height: 185px;
+  float: left;
+  color: #fff;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.crit_cost_wrp .title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+.crit_cost_wrp .cost {
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.crit_cost_bottom {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  padding: 0 20px;
+  left: 0;
+}
+
+.crit_cost_bottom a {
+  color: #fff;
+}
+
+.crit_cost_bottom .est_values_btn .fa {
+  margin-left: 10px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.crit_cost_bottom .more_info a {
+  margin-left: 8px;
+}
+
+.crit_cost_bottom .more_info .prev,
+.crit_cost_bottom .more_info .next {
+  background: #183151;
+  border-radius: 50%;
+  width: 23px;
+  height: 23px;
+  display: inline-block;
+  text-align: center;
+  line-height: 23px;
+  font-size: 16px;
+}
+
+.strategic_option {
+  position: absolute;
+  bottom: -30px;
+  width: 100%;
+  padding: 0 20px;
+  left: 0;
+  color: #3d3d3d;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.strategic_option:hover,
+.strategic_option:focus {
+  color: #3d3d3d;
+}
+
+.strategic_option .fa {
+  margin-left: 10px;
+  font-size: 20px;
+  vertical-align: top;
+}
+
+.cost_driver_wrp {
+  width: 80%;
+  float: left;
+}
+
+.add_cost_driver {
+  background: #f2f2f2;
+  width: 20%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  height: 185px;
+  float: left;
+  margin-bottom: 10px;
+}
+
+.add_cost_driver a {
+  padding-top: 60px;
+  display: block;
+}
+
+.add_cost_driver label {
+  color: #999999;
+  font-size: 14px;
+  font-weight: normal;
+  display: block;
+  margin-top: 25px;
+}
+
+/* cd item */
+.cd_item {
+  background: #f2f2f2;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+  float: left;
+  margin-bottom: 10px;
+  width: 200px;
+  height: 185px;
+}
+
+.cd_item .upper_sec {
+  background: #ffffff;
+  /*height:99px;*/
+  padding: 10px;
+}
+
+.cd_item .upper_sec .num_value {
+}
+
+.cd_item .upper_sec .den_value {
+}
+
+.cd_item .upper_sec hr {
+  text-align: left;
+  border-top: 1px solid #333333;
+  margin: 10px 70% 10px 0;
+}
+
+.cd_item .bottom_sec {
+  background: #f2f2f2;
+  color: #2b4b74;
+  height: 99px;
+  padding: 8px 0 0 0;
+  /*position:relative;*/
+}
+
+.cd_item .bottom_sec .process_value {
+  padding: 0 15px;
+  font-size: 18px;
+  display: inline-block;
+  line-height: 30px;
+  position: relative;
+  margin: 0 10px;
+}
+
+.cd_item .bottom_sec .process_value:before {
+  content: "";
+  border: 2px solid #2b4b74;
+  border-radius: 5px;
+  height: 100%;
+  position: absolute;
+  left: 0px;
+}
+
+.est_values_wrp {
+  color: #666666;
+  border-top: 1px solid #e3e0e2;
+  padding: 0px 10px;
+  margin-top: 8px;
+  display: none;
+}
+
+.est_title {
+  display: block;
+  font-size: 12px;
+  font-weight: normal;
+  margin-top: 10px;
+}
+
+.est_value {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cd_item .cd_action_btn {
+  /*position: absolute;
+		bottom: 10px;
+		left: 0;
+		width: 91%;*/
+  margin-top: 35px;
+  padding: 0 10px;
+}
+
+.cd_item .cd_action_btn button {
+  border: 0;
+  background-color: transparent;
+  margin-right: 10px;
+  background-repeat: no-repeat;
+}
+
+.cd_action_btn .rt_div {
+  text-align: right;
+  padding-bottom: 10px;
+}
+
+.cd_action_btn .comment_btn {
+  background: url(images/action_btn_3.png)-2px 0;
+  width: 20px;
+  height: 22px;
+}
+
+.cd_action_btn .opt_btn {
+  background: url(images/action_btn_4.png)-2px 0;
+  width: 10px;
+  height: 22px;
+  margin-right: 0px !important;
+}
+
+.add_cdstyle {
+  border: 1px solid #39af00;
+}
+
+.cd_action_btn .opt_btn_wrp {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+  display: none;
+  width: 235px;
+  position: absolute;
+  z-index: 1024;
+  margin-left: -185px;
+}
+
+.cd_action_btn .mark_impact {
+  background: url(images/action_btn_2.png)-2px -21px;
+  width: 22px;
+  height: 22px;
+  float: left;
+  display: none;
+}
+
+.cd_action_btn .mark_keycost {
+  background: url(images/key_cost_action.png) 0px -4px;
+  width: 26px;
+  height: 22px;
+  float: left;
+  display: none;
+}
+
+.mark_eternal {
+}
+
+/* add class on click show startegic potion*/
+.item_collapse {
+  height: 300px;
+}
+
+/* ----------- Strategy Statement ------------ */
+
+.et_state_wrap {
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.et_state_wrap .et_state_list {
+  background: #fff;
+  border: 1px solid #d4d4d4;
+  box-shadow: -1px 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 20px 0;
+  padding: 15px;
+}
+
+.et_state_list .head {
+  position: relative;
+}
+
+.et_state_list .stat_count {
+  font-size: 20px;
+  font-family: "Nunito", sans-serif;
+  vertical-align: middle;
+  font-weight: 700;
+}
+
+.et_state_list .eternal_btn {
+  background: url(images/action_icons.png)-2px -122px;
+  width: 22px;
+  height: 22px;
+}
+
+.et_state_wrap .et_btn_wrp {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+  display: none;
+  width: 235px;
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  z-index: 1024;
+}
+
+.et_state_wrap .et_btn_wrp h4 {
+  font-size: 13px;
+  font-weight: 600;
+  padding-top: 10px;
+  margin: 0 15px;
+  color: #333;
+}
+
+.et_btn_wrp li {
+  border-bottom: 1px solid #ccc;
+  margin: 0 15px;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  display: block;
+}
+
+.et_btn_wrp li:last-child {
+  border-bottom: none;
+}
+
+.et_btn_wrp li a,
+.et_btn_wrp li a:hover,
+.et_btn_wrp li a:focus {
+  color: #333;
+  padding: 10px 0px 10px 0px;
+  display: block;
+}
+
+.et_state_list .strategy_stat {
+  font-size: 14px;
+  margin: 15px 0;
+}
+
+.et_state_wrap .info_option_wrp {
+  position: relative;
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+.et_state_wrap .stat_action li {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.et_state_wrap .stat_action .item {
+  margin-right: 30px;
+}
+
+.et_state_wrap .stat_action .opt_btn {
+  position: absolute;
+  right: 0;
+  top: auto;
+  bottom: 5px;
+}
+
+.et_state_wrap .opt_btn_wrp {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+  display: none;
+  width: 235px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1024;
+}
+
+.no-data-tr {
+}
+
+.no-data-td {
+  background: #fff !important;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: left !important;
+  padding-left: 10px !important;
+}

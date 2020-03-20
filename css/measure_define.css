@@ -1,0 +1,148 @@
+.activeBtn {
+  background: #3291d6 none repeat scroll 0 0;
+  color: #ffffff;
+  outline: 0 none;
+}
+
+.crit_cost_wrp {
+  position: absolute;
+  z-index: 100;
+}
+
+.measure_head {
+  position: fixed;
+  width: 100%;
+  background: #f9f9f9;
+  z-index: 1020;
+}
+
+.cost_driver_container_wrapper {
+  margin-top: 40px;
+}
+
+/*.test{margin-left: 0px!important;}*/
+
+.horizontal-track2 {
+  width: 100%;
+  height: 8px;
+  background: #f4f4f4;
+  border-radius: 10px;
+}
+
+.horizontal-handle2 {
+  height: 8px;
+}
+
+.horizontal-handle2 .left {
+  width: 8px;
+  height: 8px;
+  background: #999999;
+  border-radius: 10px;
+}
+
+.horizontal-handle2 .right {
+  width: 100%;
+  height: 8px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #999999;
+  border-radius: 10px;
+}
+
+.cd_item {
+  /* position:relative;*/
+}
+
+.cd_inner_wrp {
+  width: 4000px;
+}
+
+.cd_inner_wrp_grid {
+  width: 100%;
+}
+
+.set_height {
+  position: absolute;
+  left: 20%;
+  height: calc(100% - 200px);
+}
+/*set height when strag option expanded */
+
+.cd_sec {
+  float: left;
+  margin-bottom: 10px;
+  width: 200px;
+}
+
+.cost_driver_wrp {
+  width: 80%;
+  float: left;
+  /* margin-left: 20%; */
+}
+
+.strag_opt_load {
+  display: none;
+}
+
+body.modal-open {
+  overflow: auto;
+  padding-right: 0 !important;
+}
+
+.strag_opt_list .stag_item {
+  position: relative;
+}
+
+.strag_opt_list .stag_item .opt_btn_wrp {
+  left: 0px;
+  top: 35px;
+  margin-left: 0px;
+}
+
+.modal-header {
+  padding: 0px !important;
+}
+
+.modal-title {
+  width: 80%;
+  float: left;
+  padding: 15px;
+}
+
+.drag_handle {
+  cursor: move;
+  float: right;
+  background-image: url(../images/drag_icon_popup.png);
+  width: 22px;
+  height: 22px;
+  margin: 15px;
+}
+
+.modal-open .modal {
+  top: 0%;
+  overflow-y: scroll;
+}
+
+.modal-dialog {
+  top: 5%;
+}
+
+/* 20nov chnges */
+.strategic_option {
+  font-size: 12px;
+}
+
+.crit_cost_bottom a {
+  font-size: 12px;
+}
+
+.strag_opt_list .stag_item p {
+  float: left;
+  width: 90%;
+  margin-bottom: 0px;
+}
+
+.clrfloat {
+  clear: both;
+}
