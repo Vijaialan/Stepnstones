@@ -579,6 +579,7 @@ function queryTypeSelected() {
 }
 /**
  * Callback function to the login function once the login is successful
+ * @callback
  */
 function loginOK(response) {
   var results = JSON.parse(response);
@@ -1671,6 +1672,7 @@ function strategyready(response) {
 //get-project-data-end
 /**
  * Callback function from the login function after successful login
+ * @callback
  */
 function startup() {
   document.getElementById("startupstatus").innerHTML =
@@ -1708,6 +1710,7 @@ var depProjs = [],
   reportStrategies = [];
 /**
  * callback function from statup function.
+ * @callback
  */
 function startupok(response) {
   var result = JSON.parse(response);
@@ -1840,6 +1843,7 @@ function reParseStrategyData(response, mid) {
 /**
  * Gets the company information for a project.
  * @param {string} pid - project id.
+ * @returns {number} Company Id
  */
 function getCompanyForProject(pid) {
   for (var i = 0; i < Gstrategies.length; i++) {
@@ -2096,7 +2100,8 @@ function saveDoc(prefix, id) {
   });
 }
 /**
- * Used to refresh the file panel in the A step. Once the file is saved this function is called
+ * Used to refresh the file panel in the A step.
+ * @callback
  * @param {string} prefix - current step the file uploaded to
  */
 function refreshDocTab(prefix) {
@@ -2400,7 +2405,10 @@ function saveWorksheet(prefix) {
     "error"
   );
 }
-
+/**
+ * Called to set inner header once inside the project
+ * @param {string} prefix - current step the project is in when clicked
+ */
 function strategyHeader(prefix) {
   var sumpanel = prefix + "-summpanel";
   var commpanel = prefix + "-commpanel";
@@ -2527,7 +2535,10 @@ function strategyHeader(prefix) {
 
   return tabstring;
 }
-
+/**
+ * Get the name of the company using company id
+ * @param {string} id - company id
+ */
 function getCompanyName(id) {
   for (var i = 0; i < Gcompanies.length; i++) {
     // if(Gcompanies[i][0] !== Gemployer && Gemployer !== "1") continue;
@@ -2554,7 +2565,11 @@ function companyExistsP(name) {
   }
   return false;
 }
-
+/**
+ * Get the company id when a company name is present
+ * @param {string} name - name of the company
+ * @return {number} company id
+ */
 function getCompanyIdFromName(name) {
   if (name === "" || name === undefined) return -1;
   var company_name = "";
@@ -2578,7 +2593,11 @@ function divisionExistsP(comp, buname) {
   }
   return false;
 }
-
+/**
+ * Get the business unit or department name when and company id and business unit name is supplied
+ * @param {string} comp - company id
+ * @param {string} buname - business unit name
+ */
 function getBUIdFromName(comp, buname) {
   // alert("company: " + comp + " buname: " + buname);
   // alert(Gprojects);
@@ -2604,7 +2623,10 @@ function populateGoals(i) {
     document.getElementById("stake").value = Gcurrentdata[Ggoalsindex][i][2];
   }
 }
-
+/**
+ * Called to save the goal into database
+ * @param {number} num - total number of goals for the project
+ */
 function addGoalInternal(num) {
   num++;
   var newgoal = "<< new goal " + num + " >>";
@@ -2666,7 +2688,9 @@ function addGoal(num) {
     });
   } else addGoalInternal(num);
 }
-
+/**
+ * Called when add goal button is clicked
+ */
 function addEDGoal() {
   $(".goaldescription_error").hide();
   $(".goalOperation_error").hide();
@@ -2693,7 +2717,10 @@ function addEDGoal() {
   GeditingGoal = -1;
 }
 $(".perspective-new").show();
-
+/**
+ * Called when edit goal button is clicked
+ * @param {number} i - goal index inside goal array for the project.
+ */
 function editEDGoal(i) {
   // $(".perspective-new").hide();
   $("#separateGoals").prop("checked", false);
@@ -2724,7 +2751,10 @@ function editEDGoal(i) {
     });
   });
 }
-
+/**
+ * Called when delete goal button is clicked
+ * @param {number} i - goal index inside goal array for the project.
+ */
 function deleteEDGoal(i) {
   $(".opt_btn_wrp").hide();
   // alert("trying to delete goal # " + i);
@@ -2973,7 +3003,9 @@ function perspChanged(i) {
   ).value;
   fixTextRowClass(["pers", "stake", "gtext"], i);
 }
-
+/**
+ * Goals HTML is prepared
+ */
 function refreshGoals() {
   var disabled = "";
   if (Gadmin == 0) disabled = " disabled ";
@@ -4229,7 +4261,9 @@ function resetMDState() {
   scrollX = 0;
   scrollY = 0;
 }
-
+/**
+ * Measure step contents are prepared
+ */
 function refreshMStep() {
   var disabled = "";
   if (Gadmin == 0) disabled = " disabled ";
@@ -4576,7 +4610,9 @@ function refreshMStep() {
   changedObjects = [];
   // refreshDStep();
 }
-
+/**
+ * Define step contents are prepared
+ */
 function refreshDStep() {
   var disabled = "";
   if (Gadmin == 0) disabled = " disabled ";
@@ -4947,7 +4983,12 @@ function refreshDStep() {
   }
   document.getElementById("Define-body").innerHTML = kcdstring;
 }
-
+/**
+ * Find Strategic Option description given a cost driver id, cost element id and strategic option id
+ * @param {number} ce - cost element id.
+ * @param {number} cd - cost driver id.
+ * @param {number} so - strategic option id
+ */
 function getSOText(ce, cd, so) {
   for (var m = 0; m < Gcurrentdata[Gcdindex].length; m++) {
     var centry = Gcurrentdata[Gcdindex][m];
@@ -5902,962 +5943,15 @@ function refreshRPage() {
   else GssFilter = 1;
   et_pricost_table();
 }
-
+/**
+ * Reduce step content is prepared
+ */
 function refreshRStep() {
-  var disabled = "";
-  if (Gadmin == 0) disabled = " disabled ";
-
-  var fixedHeaderTables = [];
-  changedObjects = [];
-  oldSelectValues = [];
-  rbstring = "";
-  var allnetCapex = 0;
-  var allmaxCapex = 0;
-  var allminCapex = 0;
-
-  var allnetOpex = 0;
-  var allmaxOpex = 0;
-  var allminOpex = 0;
-
-  var allnetRevenue = 0;
-  var allmaxRevenue = 0;
-  var allminRevenue = 0;
-
-  var allnetQual = 0;
-  var allmaxQual = 0;
-  var allminQual = 0;
-
-  var allnetCostAvoidance = 0;
-  var allmaxCostAvoidance = 0;
-  var allminCostAvoidance = 0;
-
-  var allnetSavings = 0;
-  var allmaxSavings = 0;
-  var allminSavings = 0;
-
-  var numSS = 0;
-
-  if (Gcurrentdata[Grbindex] != null) {
-    // an array of strategy statements... straight up
-    var prefixes =
-      "[desc, constraints, levam, levcomm, bentext, benval, benmax, benmin,  risktext, riskval, riskmax, riskmin]";
-    var selprefixes = "[priority, bentype, risktype]";
-    var checkboxprefixes = "[levercb]";
-    numSS = Gcurrentdata[Grbindex].length;
-    for (var i = 0; i < numSS; i++) {
-      var oentry = Gcurrentdata[Grbindex][i];
-      var active = oentry[11];
-      if (active.valueOf() == "INACTIVE".valueOf()) {
-        if (GssFilter == 1)
-          // means show ONLY active projects
-          continue;
-        color = inactiveColor;
-      }
-      if (oentry == null) {
-        rbstring = rbstring + "No data for this SS??";
-      } else {
-        var ss = oentry[0];
-        var ssname = oentry[1];
-        var ssheadname = oentry[1]; // padHeading(oentry[1]);
-        var accid = "ss-" + ss;
-        var initial = "";
-
-        var sostring =
-          "<table class=fancyTable width=100%><tr><th>Available strategic options</th>" +
-          "<th>Chosen strategic options</th></tr>";
-        if (Gcurrentdata[Gcdindex] != null) {
-          var soselid = "sssel-" + ss;
-          var soOptions =
-            '<TR><TD align=center width=40%> <select style="width: 220px; max-width: 220px; min-width: 220px;"  id="' +
-            soselid +
-            '">';
-          var selectedOptions = "";
-          for (var m = 0; m < Gcurrentdata[Gcdindex].length; m++) {
-            var centry = Gcurrentdata[Gcdindex][m];
-            if (centry == null) continue;
-            var costElement = centry[0];
-            if (centry[2] == null) continue;
-
-            for (var b = 0; b < Gcurrentdata[Gcdindex][m][2].length; b++) {
-              var cdentry = Gcurrentdata[Gcdindex][m][2][b];
-              if (cdentry != null) {
-                var driver = cdentry[0];
-                var cdname = cdentry[1];
-
-                if (cdentry[4] != null) {
-                  if (("" + cdentry[4][6]).valueOf() != "0".valueOf()) {
-                    // sostring = sostring + '<TR><TD width=30%>' + cdentry[1] + '</TD><TD>' ;
-                    selectedOptions = selectedOptions + "<table width=100%>";
-                    var kcd = cdentry[0];
-                    if (cdentry[5] != null) {
-                      for (var xx = 0; xx < cdentry[5].length; xx++) {
-                        var rclass = "";
-                        if (xx % 2 == 1) rclass = " class=alt";
-                        var so = cdentry[5][xx][0];
-                        var sotext = cdentry[5][xx][1];
-                        var sosel = cdentry[5][xx][2];
-                        // ignore any that are not to be carried forward ( selected != 1 )
-                        if ((sosel + "").valueOf() != "1".valueOf()) continue;
-                        soOptions =
-                          soOptions +
-                          '<option value="' +
-                          ss +
-                          "-" +
-                          costElement +
-                          "-" +
-                          driver +
-                          "-" +
-                          so +
-                          '">';
-                        soOptions =
-                          soOptions +
-                          " [ " +
-                          cdname +
-                          " ] " +
-                          sotext +
-                          "</option>";
-
-                        checkedp = 0;
-                        if (oentry[7] != null) {
-                          for (var yy = 0; yy < oentry[7].length; yy++) {
-                            if (so == oentry[7][yy]) {
-                              checkedp = 1;
-                            }
-                          }
-                        }
-                        if (checkedp == 1) {
-                          selectedOptions =
-                            selectedOptions + "<TR><TD width=50 align=center>";
-                          if (Gadmin == 1)
-                            selectedOptions =
-                              selectedOptions +
-                              '<div style="opacity: 0.4;"><input type=image src="images/trash20.png" title="Remove this strategic option from this strategy statement" onClick="deleteSSSo(' +
-                              costElement +
-                              ", " +
-                              driver +
-                              ", " +
-                              ss +
-                              ", " +
-                              so +
-                              ')"></div> </TD><TD>' +
-                              sotext +
-                              "</TD></TR>";
-                          else
-                            selectedOptions =
-                              selectedOptions +
-                              "&nbsp; </TD><TD>" +
-                              sotext +
-                              "</TD></TR>";
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-          soOptions = soOptions + "</select><br>";
-          if (Gadmin == 1)
-            soOptions =
-              soOptions +
-              '<div style="opacity: 0.4;"><input type=image src="images/plus32.png" title="Use this selected strategic option in this strategy statement" onClick="addSSSo(' +
-              ss +
-              ')"></div>';
-          else soOptions = soOptions + "&nbsp;";
-          soOptions = soOptions + "</TD>";
-          selectedOptions = "<TD>" + selectedOptions + "</TABLE></TD></TR>";
-          sostring = sostring + soOptions + selectedOptions;
-          sostring = sostring + "</table>";
-        }
-        sostring = sostring + "</TABLE>";
-
-        if (getSSClicks(ss) % 2 == 1) {
-          initial = " in";
-          if (GsavedSSDesc.valueOf() != "".valueOf()) {
-            ssname = GsavedSSDesc;
-          }
-        }
-        if (active.valueOf() == "INACTIVE".valueOf()) active = 0;
-        else active = 1;
-        if (active == 1)
-          rbstring =
-            rbstring +
-            '<button style="width: 900px; font-size: 16px; text-align: left; white-space: normal;" onClick="addSSClick(' +
-            ss +
-            ');" width="100%" title="Click to expose/hide strategy statement details" class="btn btn-info" data-toggle="collapse" href="#' +
-            accid +
-            '">' +
-            ssheadname +
-            " </button><P>";
-        else
-          rbstring =
-            rbstring +
-            '<button style="width: 900px; font-size: 16px; text-align: left; white-space: normal;" onClick="addSSClick(' +
-            ss +
-            ');" width="100%" title="Click to expose/hide strategy statement details" class="btn btn-warning" data-toggle="collapse" href="#' +
-            accid +
-            '">' +
-            ssheadname +
-            " </button><P>";
-
-        // if this was the strategy being edited, leave it open...
-        if (initial.valueOf() != "".valueOf())
-          rbstring = rbstring + '<div class="collapse in" id="' + accid + '">';
-        else rbstring = rbstring + '<div class="collapse" id="' + accid + '">';
-
-        var frontendss = "<table width=100%><TR>";
-        var descid = "desc-" + ss;
-
-        frontendss =
-          frontendss +
-          '<TD width=50%>&nbsp;<b>Enter strategy statement below:</b><br>&nbsp;<TEXTAREA oninput="fixTextRowClass(' +
-          prefixes +
-          ", " +
-          ss +
-          ')" id="' +
-          descid +
-          '" onClick="selectAll(' +
-          descid +
-          ')" cols=94 rows=4 ' +
-          disabled +
-          ">" +
-          ssname +
-          "</TEXTAREA><br>";
-        if (active == 1) {
-          frontendss =
-            frontendss +
-            '<center><font color=darkblue><b><input type=radio name="active-' +
-            ss +
-            '" onClick="inactivateSS(' +
-            ss +
-            ", " +
-            active +
-            ')" > Inactive&nbsp;&nbsp;&nbsp;&nbsp;';
-          frontendss =
-            frontendss +
-            '<input type=radio name="active-' +
-            ss +
-            '" onClick="activateSS(' +
-            ss +
-            ", " +
-            active +
-            ')" checked > Active</b></font></center>';
-        } else {
-          frontendss =
-            frontendss +
-            '<center><font color=darkblue><b><input type=radio name="active-' +
-            ss +
-            '" onClick="inactivateSS(' +
-            ss +
-            ", " +
-            active +
-            ')" checked > Inactive&nbsp;&nbsp;&nbsp;&nbsp;';
-          frontendss =
-            frontendss +
-            '<input type=radio name="active-' +
-            ss +
-            '" onClick="activateSS(' +
-            ss +
-            ", " +
-            active +
-            ')" > Active</b></font></center>';
-        }
-
-        frontendss = frontendss + "</TD><TD width=50%>";
-
-        var middless = "</TD></TR></TABLE>";
-        middless =
-          middless +
-          "<TABLE class=fancyTable width=100% cellpadding=1 cellspacing=1 border=1><THEAD><TR><TH>Benefits</TH><TH>Risks/Costs</TH></TR></THEAD>";
-        var netSavings = 0;
-        var maxSavings = 0;
-        var minSavings = 0;
-        var netCAPEXSavings = 0;
-        var maxCAPEXSavings = 0;
-        var minCAPEXSavings = 0;
-        var netOPEXSavings = 0;
-        var maxOPEXSavings = 0;
-        var minOPEXSavings = 0;
-        var netQualSavings = 0;
-        var maxQualSavings = 0;
-        var minQualSavings = 0;
-        var netCostAvoidance = 0;
-        var maxCostAvoidance = 0;
-        var minCostAvoidance = 0;
-        var netRevenueIncrease = 0;
-        var maxRevenueIncrease = 0;
-        var minRevenueIncrease = 0;
-
-        var constraints = oentry[2];
-        var priority = oentry[3];
-        var risks = oentry[4];
-        var benefits = oentry[5];
-        var impSelection = oentry[9];
-        var leveragable = oentry[10];
-        var startdate = oentry[17];
-        var enddate = oentry[18];
-        var owner = oentry[19];
-        // ss indices as above -- entry 10 has [ leveragable, amount ], status is 11, handle is 12
-        var bentable = "bentable-" + ss;
-        var risktable = "risktable-" + ss;
-        fixedHeaderTables.push(bentable);
-        fixedHeaderTables.push(risktable);
-        middless =
-          middless +
-          '<TR><td width=50% valign=top><table id="' +
-          bentable +
-          '" class=fancyTable width=100%><thead><tr><th width=24>&nbsp;</th><th>Benefit</th><th>Minimum</th><th>Expected (' +
-          GdefaultCurrency +
-          ")</th><th>Maximum</th><th>Type</th></tr></thead><tbody>";
-        if (benefits != null) {
-          for (var k = 0; k < benefits.length; k++) {
-            var rbtype = benefits[k][2];
-            rowclass = "";
-            if (k % 2 == 1) rowclass = ' class="odd" ';
-            middless = middless + "<tr " + rowclass + " >";
-
-            if (Gadmin == 1) {
-              middless =
-                middless +
-                "<td align=center width=26>" +
-                '<div style="opacity: 0.4;"><input type=image src="images/trash20.png" onClick="deleteSSBenefit(' +
-                ss +
-                ", " +
-                benefits[k][0] +
-                ')" title="Delete this benefit"></div></td>';
-            } else {
-              middless = middless + "<td align=center width=26> &nbsp; </td>";
-            }
-            var bensuffix = ss + "-" + k + "-benefit";
-            var ssbentext = "bentext-" + bensuffix;
-            var ssbenval = "benval-" + bensuffix;
-            var ssbenmin = "benmin-" + bensuffix;
-            var ssbenmax = "benmax-" + bensuffix;
-            var ssbentype = "bentype-" + bensuffix;
-
-            var eventspec =
-              ' onChange="fixSelRowClassWithCat(' +
-              selprefixes +
-              "," +
-              bensuffix +
-              ", " +
-              'benefit)"  ';
-            middless =
-              middless +
-              '<td width=20%><textarea oninput="fixTextRowClass(' +
-              prefixes +
-              ", " +
-              bensuffix +
-              ')" cols=20 id="' +
-              ssbentext +
-              '"' +
-              disabled +
-              ">" +
-              benefits[k][0] +
-              "</textarea></td>" +
-              '<TD width=14% align=center> <input style="text-align: right;" type=text oninput="fixTextRowClass(' +
-              prefixes +
-              ", " +
-              bensuffix +
-              ')" size=10 id="' +
-              ssbenmin +
-              '" value="' +
-              CurrencyFormat(benefits[k][3], "", 0, "", ",") +
-              '"' +
-              disabled +
-              "></TD>" +
-              '<TD  width=14% align=center> <input style="text-align: right;" type=text oninput="fixTextRowClass(' +
-              prefixes +
-              "," +
-              bensuffix +
-              ')" size=10 id="' +
-              ssbenval +
-              '" value="' +
-              CurrencyFormat(benefits[k][1], "", 0, "", ",") +
-              '"' +
-              disabled +
-              "></TD>" +
-              '<TD  width=14% align=center> <input style="text-align: right;" type=text oninput="fixTextRowClass(' +
-              prefixes +
-              ", " +
-              bensuffix +
-              ')" size=10 id="' +
-              ssbenmax +
-              '" value="' +
-              CurrencyFormat(benefits[k][4], "", 0, "", ",") +
-              '"' +
-              disabled +
-              "></TD>" +
-              "<td align=center width=25%>";
-            if (Gadmin == 1) {
-              middless =
-                middless +
-                generateSelectDefaultEvent(
-                  ssbentype,
-                  Gbtypes,
-                  rbtype,
-                  eventspec
-                ) +
-                "</td></tr>";
-              setOldSelectValue(ssbentype, rbtype);
-            } else middless = middless + rbtype + "</td></tr>";
-            var val = benefits[k][1];
-            var minval = benefits[k][3];
-            var maxval = benefits[k][4];
-            if (typeof val == "string") val = parseFloat(val);
-            if (typeof minval == "string") minval = parseFloat(minval);
-            if (typeof maxval == "string") maxval = parseFloat(maxval);
-
-            if (rbtype.search("CAPEX") > -1) {
-              netCAPEXSavings = netCAPEXSavings + val;
-              minCAPEXSavings = minCAPEXSavings + minval;
-              maxCAPEXSavings = minCAPEXSavings + maxval;
-            } else if (rbtype.search("OPEX") > -1) {
-              netOPEXSavings = netOPEXSavings + val;
-              minOPEXSavings = minOPEXSavings + minval;
-              maxOPEXSavings = maxOPEXSavings + maxval;
-            } else if (rbtype.search("Qual") > -1) {
-              netQualSavings = netQualSavings + val;
-              minQualSavings = minQualSavings + minval;
-              maxQualSavings = maxQualSavings + maxval;
-            } else if (rbtype.search("Revenue") > -1) {
-              netRevenueIncrease = netRevenueIncrease + val;
-              minRevenueIncrease = minRevenueIncrease + minval;
-              maxRevenueIncrease = maxRevenueIncrease + maxval;
-            } else if (rbtype.search("Avoid") > -1) {
-              netCostAvoidance = netCostAvoidance + val;
-              minCostAvoidance = minCostAvoidance + minval;
-              maxCostAvoidance = maxCostAvoidance + maxval;
-            }
-            netSavings = val + netSavings;
-          }
-        }
-        if (Gadmin == 1) {
-          middless = middless + "<tr>";
-          middless =
-            middless +
-            "<td colspan=6 align=center>" +
-            '<div style="opacity: 0.4;"><input type=image src="images/plus32.png" onClick="addSSBenefit(' +
-            ss +
-            ", " +
-            benefits.length +
-            ')" title="Add a Benefit"></div></td></tr>';
-        }
-        middless = middless + "</tbody></table></td>";
-
-        middless =
-          middless +
-          '<td valign=top><table id="' +
-          risktable +
-          '" class=fancyTable width=100%><thead><tr><th>&nbsp;</th><th>Risk/Cost</th><th>Minimum</th><th>Expected (' +
-          GdefaultCurrency +
-          ")</th><th>Maximum</th><th>Type</th></tr></thead><tbody>";
-        if (risks != null) {
-          for (var k = 0; k < risks.length; k++) {
-            rowclass = "";
-            if (k % 2 == 1) rowclass = ' class="odd" ';
-            middless = middless + "<tr " + rowclass + " >";
-
-            var risksuffix = ss + "-" + k + "-risk";
-            var ssrisktext = "risktext-" + risksuffix;
-            var ssriskval = "riskval-" + risksuffix;
-            var ssriskmin = "riskmin-" + risksuffix;
-            var ssriskmax = "riskmax-" + risksuffix;
-            var ssrisktype = "risktype-" + risksuffix;
-            var eventspec =
-              ' onChange="fixSelRowClassWithCat(' +
-              selprefixes +
-              ", " +
-              risksuffix +
-              ", " +
-              'risk)"  ';
-            if (Gadmin == 1) {
-              middless =
-                middless +
-                "<td align=center width=24>" +
-                '<div style="opacity: 0.4;"><input type=image src="images/trash20.png"  onClick="deleteSSRisk(' +
-                ss +
-                ", " +
-                risks[k][0] +
-                ')" title="Delete this Risk/Cost"></div></td>';
-            } else {
-              middless = middless + "<td align=center width=26> &nbsp; </td>";
-            }
-            middless =
-              middless +
-              '<td width=20%><textarea oninput="fixTextRowClass(' +
-              prefixes +
-              ", " +
-              risksuffix +
-              ')" cols=20 id="' +
-              ssrisktext +
-              '"' +
-              disabled +
-              ">" +
-              risks[k][0] +
-              "</textarea></td>" +
-              '<TD  width=14% align=center> <input style="text-align: right;" type=text oninput="fixTextRowClass(' +
-              prefixes +
-              ", " +
-              risksuffix +
-              ')" size=10 id="' +
-              ssriskmin +
-              '" + value="' +
-              CurrencyFormat(risks[k][3], "", 0, "", ",") +
-              '"' +
-              disabled +
-              "></TD>" +
-              '<TD width=14% align=center> <input style="text-align: right;" type=text oninput="fixTextRowClass(' +
-              prefixes +
-              ", " +
-              risksuffix +
-              ')" size=10 id="' +
-              ssriskval +
-              '" + value="' +
-              CurrencyFormat(risks[k][1], "", 0, "", ",") +
-              '"' +
-              disabled +
-              "> </TD>" +
-              '<TD  width=14% align=center> <input style="text-align: right;" type=text oninput="fixTextRowClass(' +
-              prefixes +
-              ", " +
-              risksuffix +
-              ')" size=10 id="' +
-              ssriskmax +
-              '" + value="' +
-              CurrencyFormat(risks[k][4], "", 0, "", ",") +
-              '"' +
-              disabled +
-              "></TD>" +
-              "<td align=center width=25%>";
-            var rbtype = risks[k][2];
-            if (Gadmin == 1) {
-              middless =
-                middless +
-                generateSelectDefaultEvent(
-                  ssrisktype,
-                  Grtypes,
-                  risks[k][2],
-                  eventspec
-                ) +
-                "</td></tr>";
-              setOldSelectValue(ssrisktype, rbtype);
-            } else middless = middless + rbtype + "</td></tr>";
-
-            var val = risks[k][1];
-            var minval = risks[k][3];
-            var maxval = risks[k][4];
-            if (typeof val == "string") val = parseFloat(val);
-            if (typeof minval == "string") minval = parseFloat(minval);
-            if (typeof maxval == "string") maxval = parseFloat(maxval);
-
-            if (rbtype.search("CAPEX") > -1) {
-              netCAPEXSavings = netCAPEXSavings - val;
-              maxCAPEXSavings = maxCAPEXSavings - minval;
-              minCAPEXSavings = minCAPEXSavings - maxval;
-            } else if (rbtype.search("OPEX") > -1) {
-              netOPEXSavings = netOPEXSavings - val;
-              maxOPEXSavings = maxOPEXSavings - minval;
-              minOPEXSavings = minOPEXSavings - maxval;
-            } else if (rbtype.search("Qual") > -1) {
-              netQualSavings = netQualSavings - val;
-              maxQualSavings = maxQualSavings - minval;
-              minQualSavings = minQualSavings - maxval;
-            } else if (rbtype.search("Revenue") > -1) {
-              netRevenueIncrease = netRevenueIncrease - val;
-              maxRevenueIncrease = maxRevenueIncrease - minval;
-              minRevenueIncrease = minRevenueIncrease - maxval;
-            }
-
-            netSavings = netSavings - val;
-          }
-        }
-        if (Gadmin == 1) {
-          middless = middless + "<tr>";
-          middless =
-            middless +
-            '<td colspan=6 align="center">' +
-            '<div style="opacity: 0.4;"><input type=image src="images/plus32.png"  onClick="addSSRisk(' +
-            ss +
-            ", " +
-            risks.length +
-            ')" title="Add a Risk/Cost"></div></td></tr>';
-        }
-        middless = middless + "</tbody></table></td>";
-        middless = middless + "</TR>";
-
-        frontendss = frontendss + sostring + "<P>&nbsp;</P>";
-        var savingsID = "spanel-" + ss;
-
-        var stabOpen = "";
-        if (getSummClicks(ss) % 2 == 1) stabOpen = " in ";
-        var savingstab =
-          '<center><button title="Click to expose/hide savings" onClick="addSummClick(' +
-          ss +
-          ');" class="btn-sm btn-info" data-toggle="collapse" data-target="#' +
-          savingsID +
-          '">Savings from this Strategy Statement:</button></center>';
-        savingstab =
-          savingstab +
-          '<div class="collapse ' +
-          stabOpen +
-          '" id="' +
-          savingsID +
-          '" > <TABLE width=100%><THEAD><TR><TH>&nbsp;</TH><TH>Expected</TH><TH>Minimum</TH><TH>Maximum</TH></TR></THEAD>';
-        savingstab =
-          savingstab +
-          "<TR><TD>Net CAPEX Savings:</TD><TD>" +
-          CurrencyFormat(netCAPEXSavings, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(minCAPEXSavings, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(maxCAPEXSavings, GdefaultCurrency, 0, "", ",") +
-          "</TD><TR>";
-        savingstab =
-          savingstab +
-          '<TR class="odd"><TD>Net OPEX Savings:</TD><TD>' +
-          CurrencyFormat(netOPEXSavings, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(minOPEXSavings, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(maxOPEXSavings, GdefaultCurrency, 0, "", ",") +
-          "</TD><TR>";
-        savingstab =
-          savingstab +
-          "<TR><TD>Net Revenue Increase:</TD><TD>" +
-          CurrencyFormat(netRevenueIncrease, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(minRevenueIncrease, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(maxRevenueIncrease, GdefaultCurrency, 0, "", ",") +
-          "</TD><TR>";
-        savingstab =
-          savingstab +
-          '<TR class="odd"><TD>Net Qualitative Savings:</TD><TD>' +
-          CurrencyFormat(netQualSavings, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(minQualSavings, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(maxQualSavings, GdefaultCurrency, 0, "", ",") +
-          "</TD><TR>";
-        savingstab =
-          savingstab +
-          "<TR><TD>Cost Avoidance</TD><TD>" +
-          CurrencyFormat(netCostAvoidance, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(minCostAvoidance, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(maxCostAvoidance, GdefaultCurrency, 0, "", ",") +
-          "</TD><TR>";
-
-        var maxTotal =
-          maxCAPEXSavings +
-          maxOPEXSavings +
-          maxRevenueIncrease +
-          maxQualSavings +
-          maxCostAvoidance;
-        var minTotal =
-          minCAPEXSavings +
-          minOPEXSavings +
-          minRevenueIncrease +
-          minQualSavings +
-          minCostAvoidance;
-
-        savingstab =
-          savingstab +
-          '<TR class="odd"><TD><b>Total:</b></TD><TD>' +
-          CurrencyFormat(netSavings, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(minTotal, GdefaultCurrency, 0, "", ",") +
-          "</TD><TD>" +
-          CurrencyFormat(maxTotal, GdefaultCurrency, 0, "", ",") +
-          "</TD><TR></TABLE>";
-        savingstab = savingstab + "</div>";
-
-        allnetCapex = allnetCapex + netCAPEXSavings;
-        allmaxCapex = allmaxCapex + maxCAPEXSavings;
-        allminCapex = allminCapex + minCAPEXSavings;
-
-        allnetOpex = allnetOpex + netOPEXSavings;
-        allmaxOpex = allmaxOpex + maxOPEXSavings;
-        allminOpex = allminOpex + minOPEXSavings;
-
-        allnetRevenue = allnetRevenue + netRevenueIncrease;
-        allmaxRevenue = allmaxRevenue + maxRevenueIncrease;
-        allminRevenue = allminRevenue + minRevenueIncrease;
-
-        allnetQual = allnetQual + netQualSavings;
-        allmaxQual = allmaxQual + maxQualSavings;
-        allminQual = allminQual + minQualSavings;
-
-        allnetCostAvoidance = allnetCostAvoidance + netCostAvoidance;
-        allmaxCostAvoidance = allmaxCostAvoidance + maxCostAvoidance;
-        allminCostAvoidance = allminCostAvoidance + minCostAvoidance;
-
-        allnetSavings = allnetSavings + netSavings;
-        // allmaxSavings = allmaxSavings + allmaxCapex + allmaxRevenue + allmaxQual + allmaxCostAvoidance +allmaxOpex;
-        allmaxSavings = allmaxSavings + maxTotal;
-        // allminSavings = allminSavings + allminCapex + allminRevenue + allminQual + allminCostAvoidance +allminOpex;
-        allminSavings = allminSavings + minTotal;
-
-        rbstring = rbstring + frontendss + middless;
-
-        var priorityID = "ppanel-" + ss;
-        rbstring =
-          rbstring +
-          '<TR><TD valign=top><center><button onClick="addPRClick(' +
-          ss +
-          ');" title="Click to expose/hide additional details" type="button" class="btn-sm btn-info" data-toggle="collapse" data-target="#' +
-          priorityID +
-          '">';
-        rbstring =
-          rbstring + "Priority/Constraints/Leveragable </button></center>";
-        var prOpen = "";
-        if (getPRClicks(ss) % 2 == 1) prOpen = " in";
-        rbstring =
-          rbstring +
-          '<div class="collapse ' +
-          prOpen +
-          ' " id="' +
-          priorityID +
-          '" >' +
-          '<TABLE><TR class="odd"><TD><b>Priority:</b></TD><TD colspan=2><select onChange="fixSelRowClass(' +
-          selprefixes +
-          ", " +
-          ss +
-          ')" id="priority-' +
-          ss +
-          '"' +
-          disabled +
-          ">";
-        setOldSelectValue("priority-" + ss, priority);
-
-        var selectstring = "";
-        var selected = "";
-        if ("LOW".valueOf() == priority.valueOf()) selected = "selected";
-        selectstring =
-          selectstring + '<option value="LOW" ' + selected + ">LOW</option>";
-
-        selected = "";
-        if ("MEDIUM".valueOf() == priority.valueOf()) selected = "selected";
-        selectstring =
-          selectstring +
-          '<option value="MEDIUM" ' +
-          selected +
-          ">MEDIUM</option>";
-
-        selected = "";
-        if ("HIGH".valueOf() == priority.valueOf()) selected = "selected";
-        selectstring =
-          selectstring +
-          '<option value="HIGH" ' +
-          selected +
-          ">HIGH</option></select></TD></TR>";
-        rbstring = rbstring + selectstring;
-
-        var constrid = "constraints-" + ss;
-        rbstring =
-          rbstring +
-          '<TR><TD><b>Constraints:</b></TD><TD colspan=2><textarea oninput="fixTextRowClass(' +
-          prefixes +
-          ", " +
-          ss +
-          ')" rows=3 cols=75 id="' +
-          constrid +
-          '" onClick="selectAll(' +
-          constrid +
-          ')" ' +
-          disabled +
-          ">" +
-          constraints +
-          "</textarea></TD></TR>";
-
-        if (leveragable != null && leveragable.length > 0) {
-          var levcom = leveragable[1];
-          var levam = leveragable[0];
-          if (levam == null) levam = "";
-          if (levcom == null) levcom = "";
-          rbstring =
-            rbstring +
-            '<TR  class="odd"><TD><b>&nbsp;Leveragable?</b>&nbsp;&nbsp; <input type=checkbox id="levercb-' +
-            ss +
-            '" title="Check if leverageable"  checked ' +
-            disabled +
-            ">  </TD>";
-          rbstring = rbstring + '<TD><div id="lever-' + ss + '">';
-          rbstring =
-            rbstring +
-            '<table width=80%><TR><TD width=20%>Enter amount:</td><td><input type=text oninput="fixTextRowClass(' +
-            prefixes +
-            ", " +
-            ss +
-            ')" size=40 id="levam-' +
-            ss +
-            '" value="' +
-            levam +
-            '"' +
-            disabled +
-            "></TD></TR>" +
-            '<TR><TD>Comment:</TD><TD><textarea oninput="fixTextRowClass(' +
-            prefixes +
-            ", " +
-            ss +
-            ')" id="levcomm-' +
-            ss +
-            '"' +
-            disabled +
-            ">" +
-            levcom +
-            " </textarea></td></tr></table>";
-          rbstring = rbstring + "</div></TD></TR></TABLE></DIV>";
-        } else {
-          rbstring =
-            rbstring +
-            '<TR class="odd"><TD><b>&nbsp;Leveragable?</b>&nbsp;&nbsp; <input type=checkbox id="levercb-' +
-            ss +
-            '" title="Check if leverageable"  checked ' +
-            disabled +
-            ">  </TD>";
-          rbstring = rbstring + '<TD><div id="lever-' + ss + '">';
-          rbstring =
-            rbstring +
-            '<table width=80%><TR><TD width=20%>Enter amount:</td><td><input type=text oninput="fixTextRowClass(' +
-            prefixes +
-            ", " +
-            ss +
-            ')" size=40 id="levam-' +
-            ss +
-            '" value=""' +
-            disabled +
-            "></TD></TR>" +
-            '<TR><TD>Comment:</TD><TD><textarea oninput="fixTextRowClass(' +
-            prefixes +
-            ", " +
-            ss +
-            ')" id="levcomm-' +
-            ss +
-            '"' +
-            disabled +
-            "> </textarea></td></tr></table>";
-          rbstring = rbstring + "</div></TD></TR></TABLE></DIV>";
-        }
-
-        var selStr = "";
-        if (impSelection.valueOf() == "SELECTED".valueOf()) selStr = "checked";
-        rbstring =
-          rbstring +
-          '<BR><center><b>&nbsp;Select for Implementation?</b>  <input type=checkbox id="sel-' +
-          ss +
-          '" title="Carry forward this strategy statement to Implementation" onClick="selectSS(' +
-          ss +
-          ');"' +
-          selStr +
-          disabled +
-          "></center>";
-        // rbstring = rbstring + '<TR><TD align=center> <button title="Save basic strategy statement properties" class="btn-sm btn-info" onClick="saveSS(' + ss + ')">Save Strategy Statement</button></TD>';
-        rbstring = rbstring + "</TD>";
-
-        // alert("options" + selectstring);
-        // start of the strategic options table...
-        rbstring = rbstring + '<TD valign="top">';
-
-        rbstring = rbstring + savingstab + "</TD></TR>";
-        // rbstring = rbstring + '<TR class=alt><TD colspan=3>&nbsp;</TD></TR>';
-        rbstring = rbstring + "</TABLE></DIV><P>";
-      }
-    }
-  }
-
-  var fullsumm =
-    '<button title="Click to expose/hide overall summary" class="btn btn-primary" data-toggle="collapse" data-target="#fullsum">Show/Hide Overall Summary...</button><br><div class="collapse" id="fullsum"> <TABLE class=fancyTable width=100%><TR><TD width=16%><b>Net CAPEX Savings:</b> (' +
-    GdefaultCurrency +
-    ") </TD>" +
-    "<TD><b>Net OPEX Savings:</b> (" +
-    GdefaultCurrency +
-    ") </TD>" +
-    "<TD><b>Net Revenue Increase:</b> (" +
-    GdefaultCurrency +
-    ") </TD>" +
-    "<TD><b>Net Qualitative Savings:</b> (" +
-    GdefaultCurrency +
-    ") </TD>" +
-    "<TD><b>Cost Avoidance</b> (" +
-    GdefaultCurrency +
-    ") </TD>" +
-    "<TD><b>Total:</b> (" +
-    GdefaultCurrency +
-    ") </TD><TD></TR>" +
-    '<TR class="odd"><TD> ' +
-    CurrencyFormat(allnetCapex, "", 0, "", ",") +
-    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<font color="red"> ' +
-    CurrencyFormat(allminCapex, "", 0, "", ",") +
-    '</font>,<font color="blue"> ' +
-    CurrencyFormat(allmaxCapex, "", 0, "", ",") +
-    "</font> ]" +
-    "</TD><TD> " +
-    CurrencyFormat(allnetOpex, "", 0, "", ",") +
-    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<font color="red"> ' +
-    CurrencyFormat(allminOpex, "", 0, "", ",") +
-    '</font>,<font color="blue"> ' +
-    CurrencyFormat(allmaxOpex, "", 0, "", ",") +
-    "</font> ] " +
-    "</TD><TD>" +
-    CurrencyFormat(allnetRevenue, "", 0, "", ",") +
-    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<font color="red"> ' +
-    CurrencyFormat(allminRevenue, "", 0, "", ",") +
-    '</font>,<font color="blue"> ' +
-    CurrencyFormat(allmaxRevenue, "", 0, "", ",") +
-    "</font> ]" +
-    "</TD><TD>" +
-    CurrencyFormat(allnetQual, "", 0, "", ",") +
-    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<font color="red"> ' +
-    CurrencyFormat(allminQual, "", 0, "", ",") +
-    '</font>,<font color="blue"> ' +
-    CurrencyFormat(allmaxQual, "", 0, "", ",") +
-    "</font> ] " +
-    "</TD><TD>" +
-    CurrencyFormat(allnetCostAvoidance, "", 0, "", ",") +
-    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<font color="red"> ' +
-    CurrencyFormat(allminCostAvoidance, "", 0, "", ",") +
-    '</font>,<font color="blue"> ' +
-    CurrencyFormat(allmaxCostAvoidance, "", 0, "", ",") +
-    "</font> ]" +
-    "</TD><TD>" +
-    CurrencyFormat(allnetSavings, "", 0, "", ",") +
-    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<font color="red"> ' +
-    CurrencyFormat(allminSavings, "", 0, "", ",") +
-    '</font>,<font color="blue"> ' +
-    CurrencyFormat(allmaxSavings, "", 0, "", ",") +
-    "</font> ] " +
-    "</TD></TR></TABLE></div>";
-
-  var prepp =
-    '<table width=100%> <TR><TD width=300><button title="Create a template for a new strategy statement" type="button" class="btn btn-primary" onClick="addNewSSTemplate(' +
-    numSS +
-    ')"' +
-    disabled +
-    ">&nbsp; + New Strategy Statement</button></TD><TD>";
-  if (GssFilter == 2)
-    prepp =
-      prepp +
-      '<font color=darkblue><b><input type=radio id="allss" onClick="refreshRPage();" name="whichSS" checked> Show All <br>' +
-      '<input type=radio id="activess" onClick="refreshRPage();" name="whichSS" > Show Active</b></font>';
-  else
-    prepp =
-      prepp +
-      '<font color=darkblue><b><input type=radio id="allss" onClick="refreshRPage();" name="whichSS"> Show All <br>' +
-      '<input type=radio id="activess" onClick="refreshRPage();" name="whichSS" checked> Show Active</b></font>';
-
   document.getElementById("Reduce-body").innerHTML = reduceStepContents();
-
   $(".strategy_stat_wrap").click(function() {
-    //
-
     var elements = this.id.split("-");
     GcurrentSS = parseInt(elements[1]);
-
     let ratOpn = localStorage.getItem("toggleId");
-
     if (
       "implementDropDown" + GcurrentSS == ratOpn ||
       "reduce-" + GcurrentSS == ratOpn ||
@@ -6877,7 +5971,6 @@ function refreshRStep() {
     $(".action_info_block").hide();
     $(".action_head").addClass("d-block");
   });
-
   // when refreshing display, add data for the current SS
   if (GcurrentSS != -1) {
     populateSSRisksBenefits();
@@ -6888,14 +5981,15 @@ function refreshRStep() {
   $(function() {
     $(".cus_scroll").overlayScrollbars({});
   });
-
   OverlayScrollbars(document.getElementById("left-panel"), {
     className: "os-theme-dark deviant-scrollbars"
   });
-
   restoreSSPageState();
 }
-
+/**
+ * Reduce step content is prepared
+ * @callback
+ */
 function reduceStepContents() {
   var body = `<div class="container-fluid">
     <div class="row">
@@ -7101,7 +6195,9 @@ function reduceStepContents() {
     </div>`;
   return body;
 }
-
+/**
+ * Reduce step Benefits and Risks content
+ */
 function populateSSRisksBenefits() {
   if (Gcurrentdata[Grbindex] == null) return;
   var benefitsString = "";
@@ -7374,8 +6470,6 @@ function deleteSSAction(ss, action) {
   } else deleteSSActionInternal(ss, action);
 }
 
-function saveSSAction(ss, action, update) {}
-
 // this will always be from the logged in user...
 function addSSActionComment(ss, action) {
   document.getElementById("vestatus").innerHTML = "Adding comment to action...";
@@ -7590,7 +6684,9 @@ function downSSAction(ss, action, source) {
     });
   } else downSSActionInternal(ss, action, source);
 }
-
+/**
+ * Implement step content is prepared
+ */
 function refreshImStep() {
   imstring = implementStepContents();
   document.getElementById("Implement-body").innerHTML = imstring;
@@ -7686,7 +6782,9 @@ function refreshVCharts() {
     );
   }
 }
-
+/**
+ * Verify step content is prepared
+ */
 function refreshVStep() {
   document.getElementById("Verify-body").innerHTML = verifyStepContents();
   $(".strategy_stat_wrap").click(function() {
@@ -8253,7 +7351,9 @@ function injectPerspectives(goalnum) {
   res = res + "</datalist>";
   return res;
 }
-
+/**
+ * Agree step content is prepared
+ */
 function agreeContents() {
   var rationaleExists = true;
   if (
@@ -8681,7 +7781,10 @@ function getAnklesaria() {
   }
   return -1;
 }
-
+/**
+ * Get participants of a project based on project id
+ * @param {number} s - Project Id
+ */
 function getTeamParticipants(s) {
   for (var i = 0; i < Gstrategies.length; i++) {
     if ((Gstrategies[i][0] + "").valueOf() == (s + "").valueOf()) {
@@ -8782,7 +7885,10 @@ function getPotentialTeamMembers(strategy) {
   return persons;
 }
 
-// show the team area for Strategy "i"
+/**
+ * Team panel for a particular project
+ * @param {number} i - Project Id
+ */
 function refreshTeamArea(i) {
   var teamstring =
     "<table class=fancyTable cellpadding=1 cellspacing=1 border=1 width=100%>";
@@ -11664,7 +10770,10 @@ function getFirstLast(pn) {
   }
   return ["first?", "last?", "??"];
 }
-
+/**
+ * Get the persons first name, last name and full name initials given a person id
+ * @param {number} id - Person Id
+ */
 function getFirstLastFromId(id) {
   for (var i = 0; i < Gpersons[1].length; i++) {
     if (Gpersons[1][i][0] == id) {
@@ -11686,7 +10795,10 @@ function getPersonEntryFromId(id) {
   }
   return null; // should never happen...
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ */
 function getEmployerCompany(pid) {
   for (var i = 0; i < Gpersons[1].length; i++) {
     if (Gpersons[1][i][0] == pid) {
@@ -11771,7 +10883,10 @@ function refreshTable(obj) {
     obj.fnAdjustColumnSizing();
   }, 1000);
 }
-
+/**
+ * called when users api is successful.
+ * @callback
+ */
 function usersReady(response) {
   var result = JSON.parse(response);
   if (result[0].valueOf() != "".valueOf()) {
@@ -12110,8 +11225,6 @@ function saveIWorksheet() {
     }
   }
 }
-
-function doNothing() {}
 
 function saveNew(ce, update) {
   // alert ("ce = " + ce + " update= " + update);
@@ -13434,7 +12547,9 @@ function includeSupplierP(id) {
   }
   return false;
 }
-
+/**
+ * Prepares the html post login. The projects table is prepared.
+ */
 function setEDMyProjectsBody() {
   var body =
     '<div class="container-fluid">' +
@@ -16152,7 +15267,10 @@ function peopleEDContent() {
   });
 }
 kbFilter = ["all"];
-
+/**
+ * Module called when a link is clicked
+ * @param {string} page - Name of the link clicked
+ */
 function switchMainContentsInternal(page) {
   // this is called ONLY when users shift page -- so reset display data for various screens...
   resetMDState();
@@ -16306,21 +15424,21 @@ function switchMainContentsInternal(page) {
     companiesEDContent();
     return;
   }
-
+  // if people insided directory is clicked
   if (page.valueOf() == "people".valueOf()) {
     setEDGenericHeader(page);
     setEDDirectoryNav(page);
     peopleEDContent();
     return;
   }
-
+  // if reports is clicked
   if (page.valueOf() == "reports".valueOf()) {
     setEDGenericHeader(page);
     setEDPageNav(page);
     getAllReportData();
     return;
   }
-
+  // if academy is clicked
   if (page.valueOf() == "academy".valueOf()) {
     setEDGenericHeader(page);
     setEDPageNav(page);
@@ -16328,7 +15446,7 @@ function switchMainContentsInternal(page) {
       "Contents for page: " + page + " goes here";
     return;
   }
-
+  // if knowledgebase is clicked
   if (page.valueOf() == "knowledgebase".valueOf()) {
     setEDGenericHeader(page);
     setEDPageNav(page);
@@ -16503,11 +15621,11 @@ function switchMainContentsInternal(page) {
     });
     return;
   }
-
+  // if tutorial is clicked
   if (page.valueOf() == "learning".valueOf()) {
     setEDGenericHeader(page);
     setEDPageNav(page);
-    learningModule(page);
+    learningModule();
     return;
   }
 
@@ -16517,8 +15635,10 @@ function switchMainContentsInternal(page) {
 }
 
 function videoHTML(num) {}
-
-function learningModule(page) {
+/**
+ * HTML for tutorial tab is prepared here
+ */
+function learningModule() {
   let htmlBody = `
   <div class="container-fluid">
 <div id="faq" role="tablist" aria-multiselectable="true">
@@ -18250,7 +17370,12 @@ function getPrintDate(dbdate) {
   var d = new Date(newd);
   return d.toDateString().substring(4);
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function refreshBackground() {
   var body =
     '<div class="container-fluid">' +
@@ -19264,7 +18389,12 @@ function addTaskPerformer(taskid, perf, update) {
       //,datatype: "json"
     });
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function saveTask() {
   $("#tasks_modal").modal("hide");
   var date = getDateById("input_taskdate");
@@ -19876,7 +19006,12 @@ function editEDCompany(cid) {
   if (centry.length > 6) document.getElementById("supplierCB").checked = true;
   else document.getElementById("supplierCB").checked = false;
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function saveEDCompany() {
   $("#company_modal").modal("hide");
   var name = document.getElementById("company_name").value;
@@ -20178,7 +19313,12 @@ function deleteEDPerson(perf) {
   );
   $(".opt_btn_wrp").hide();
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function deletePersonInternal(perf) {
   //
   //
@@ -20408,7 +19548,12 @@ function numbersOnlyPlease(elem) {
     elem.value = lastValid;
   }
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function saveEDProject() {
   var name = document.getElementById("project_title").value;
   var compname = document.getElementById("client_name").value;
@@ -20537,7 +19682,12 @@ function deleteEDProject(projectId) {
 }
 
 var userSelectedSuppliers = [];
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function generateSupplierSelector(divid, projectid) {
   var body =
     '<select multiple="multiple" id="multiselect_suppliers" class="textbox  mo-editor choice" style=" display:none;" >';
@@ -20723,7 +19873,12 @@ function generateBUSelector() {
 }
 
 var GprojectForSupplier = -1;
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function addEDSupplier(response) {
   var res = JSON.parse(response);
   var new_supplier = document.getElementById("supp_name").value;
@@ -21134,7 +20289,12 @@ function strategyEDOpFailed(resp) {
 function projectEDOpFailed(resp) {
   showTimedMessage("gmsg", "Project update failed", 0, true);
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function verifyStepContents() {
   let loggedinuser = localStorage.getItem("Gpnid");
   //
@@ -21421,7 +20581,12 @@ function verifyStepContents() {
 
 GCurrentSSDropped = false;
 GCurrentSSComplete = false;
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function implementStepContents() {
   let loggedinuser = localStorage.getItem("Gpnid");
   //
@@ -21635,6 +20800,12 @@ function implementStepContents() {
   return body;
 }
 var selectedActionPerformers = [];
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function populateActionPerformers(datalistname, divname, performers) {
   selectedActionPerformers = [];
   var actionPerformers = performers.split(",");
@@ -21701,7 +20872,12 @@ function populateActionPerformers(datalistname, divname, performers) {
 
   $select.multiselect("select", selectedActionPerformers);
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function addEDSSAction() {
   if (GCurrentSSDropped) {
     //
@@ -21765,7 +20941,12 @@ function addEDSSAction() {
     $("#action_modal").modal("show");
   }
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function findActionEntryInSS(ss, position) {
   for (var i = 0; i < Gcurrentdata[Grbindex].length; i++) {
     var oentry = Gcurrentdata[Grbindex][i];
@@ -21777,7 +20958,11 @@ function findActionEntryInSS(ss, position) {
   return [];
 }
 var currentActionId = -1;
-
+/**
+ * called when edit action button is clicked in I step
+ * @param {number} i - index of the action item in strategy statement
+ * @param {object} ssObject1 - strategy statement Object
+ */
 function editEDSSAction(i, ssObject1) {
   if (ssObject1.ssdropped == 1) {
     myAlert(
@@ -21955,9 +21140,11 @@ function getActionImplementers(oentry) {
 
   return performers;
 }
-
+/**
+ * HTML for actions of a strategy statement in I step
+ */
 function refreshSS_ED_Actions() {
-  //
+  console.trace();
   var body = "";
   let temPbody = "";
   var deadline;
@@ -22568,7 +21755,9 @@ function datePickerFormatter(date) {
   return today;
 }
 
-//
+/**
+ * add an action progress for a strategy statement in V step
+ */
 function saveNewProgressNote() {
   var comment = document.getElementById("input_update").value;
   var progress = document.getElementById("input_progress").value;
@@ -22769,7 +21958,11 @@ function toggleStrategicOptions(obj) {
       .removeClass("d-block");
   }
 }
-
+/**
+ * HTML for strategic option checkboxes while adding/editing a strategy statement in R step
+ * @param {number} currSS - current strategy statement
+ * @param {number} divid - id of the div where the checboxes has to be added
+ */
 function initStrategicOptions(currSS, divid) {
   body = "";
   allCBIDs = [];
@@ -22987,6 +22180,7 @@ function findSSEntry(ss) {
   }
   return entry;
 }
+
 function getSummaryPerformanceForStrat(ss, currentData) {
   var net = 0,
     costSavings = 0,
@@ -23014,19 +22208,6 @@ function getSummaryPerformanceForStrat(ss, currentData) {
           else revenueIncrease = revenueIncrease + val;
         }
       }
-
-      // if (risks != null) {
-      //   for (var k = 0; k < risks.length; k++) {
-      //     var rbtype = risks[k][2];
-      //     var val = risks[k][1];
-      //     // alert( "rtype = " + rbtype + " value= " + val);
-      //     if (typeof val == "string") val = parseFloat(val);
-      //     totalRisks += val;
-      //     if (rbtype.search("Revenue Decrease")) revenueDecrease = revenueDecrease + val;
-      //     else costIncrease = costIncrease + val;
-      //     riskVal = riskVal + val;
-      //   }
-      // }
       data = {
         costSavings: costSavings,
         revenueIncrease: revenueIncrease,
@@ -23049,7 +22230,10 @@ function getSummaryPerformanceForStrat(ss, currentData) {
   }
   return [costSavings, revenueIncrease, riskVal, costIncrease, revenueDecrease];
 }
-
+/**
+ * get benefits and risks of a strategy statement
+ * @param {array} oentry - strategy statement array
+ */
 function getSummaryPerformanceAlt(oentry) {
   var net = 0,
     costSavings = 0,
@@ -23235,7 +22419,12 @@ function deleteEDSSIm(ssObject) {
 }
 
 var SSUpdateFrom = 1;
-
+/**
+ * called when edit strategy statement is clicked in I stage
+ * @param {number} page - step identifier
+ * @param {number} ssid - strategy statement id
+ * @param {object} ssObject - strategy statement object
+ */
 function editEDSSS(page, ssid, ssObject) {
   if (ssObject.sscomplete == 1) {
     myAlert(
@@ -23355,7 +22544,9 @@ function setupSOs(ss) {
 }
 
 var allCBIDs = [];
-
+/**
+ * Adding a new strategy statement
+ */
 function saveEDSS() {
   var handle = document.getElementById("add_strategy_no").value;
   var desc = document.getElementById("add_strategy_statmnt").value;
@@ -23463,7 +22654,9 @@ function saveEDSS() {
     });
   }
 }
-
+/**
+ * Edit/Add Strategy statement in I step
+ */
 function saveEDSSI() {
   var handle = document.getElementById("strategy_no").value;
   var desc = document.getElementById("strategy_statmnt").value;
@@ -24592,7 +23785,9 @@ function edLogoutInternal() {
   //document.getElementById("admincontent").style.visibility = "hidden";
   // document.getElementById("loginstatus").innerHTML = "You have been successfully logged out";
 }
-
+/**
+ * Ajax call to upload a file
+ */
 function disableFileSubmit() {
   document.getElementById("file_submit").disabled = false;
   let file = document.getElementById("file").files[0]; // file from input
@@ -24628,45 +23823,15 @@ function disableFileSubmit() {
 }
 
 var updateFilePanel = "main";
-
+/**
+ * called when add file button is clicked
+ */
 function addNewFile() {
   $("#files_modal").modal("show");
   $("#title").val("");
   $("#file").val("");
   $("#step").val("");
   updateFilePanel = "main";
-  var tabstring = "";
-  tabstring =
-    tabstring +
-    '<input name="company" id="upl_comp" type="hidden" value="' +
-    getCompanyForProject(Gcurrentstrategy) +
-    '">';
-  tabstring =
-    tabstring +
-    '<input name="bu" id="upl_bu" type="hidden" value="' +
-    getBUForProject(Gcurrentstrategy) +
-    '">';
-  tabstring =
-    tabstring +
-    '<input name="project" id="upl_strat" type="hidden" value="' +
-    Gcurrentstrategy +
-    '">';
-  tabstring =
-    tabstring +
-    '<input name="username" id="upl_uname" type="hidden" value="' +
-    Gusername +
-    '">';
-  tabstring =
-    tabstring +
-    '<input name="token" id="upl_token" type="hidden" value="' +
-    Gtoken +
-    '">';
-  document.getElementById("projectVariables").innerHTML = tabstring;
-}
-
-function addNewFileSidePanel() {
-  $("#file_upload_form")[0].reset();
-  updateFilePanel = "side";
   var tabstring = "";
   tabstring =
     tabstring +
@@ -24754,10 +23919,11 @@ function getEDDocumentsPanel(strategy) {
 function fileEDOpFailed(response) {
   showTimedMessage("gmsg", "ERROR in uploading " + response, 0, true);
 }
-
+/**
+ * HTML for identify step is prepared
+ */
 function identifyStepContents() {
-  // alert("idContents 5");
-
+  console.trace();
   if (Gcurrentdata[Gprimeindex] == null || Gcurrentdata[Gprimeindex][0] == null)
     return;
   costTree = [
@@ -24945,6 +24111,13 @@ function identifyStepContents() {
 }
 
 // up and down describe whether up button and down button are needed (or not)
+/**
+ * Get the company info when person id is given
+ * @param {array} node - cost elements array
+ * @param {number} level - level
+ * @param {number} up - Cost element id above
+ * @param {number} down - Cost element id below
+ */
 function renderEDTree(node, level, up, down) {
   var disabled = "";
   if (Gadmin == 0) disabled = " disabled ";
@@ -25469,9 +24642,6 @@ function isLeaf(node) {
 var allNodeCosts = [];
 
 function computeBottomUpCosts(node) {
-  //
-  //
-
   var ce = "";
   if (node == null) return;
   if (node[7] != null) ce = node[7];
@@ -25506,8 +24676,11 @@ function getComputedCost(ce) {
   }
   return -1; // should never happen...
 }
-
+/**
+ * HTML for identify step tree
+ */
 function renderFullEDTree() {
+  console.trace();
   oldCheckBoxValues = [];
   oldSelectValues = [];
   updateForm = "( ";
@@ -25728,7 +24901,10 @@ function someParentIsCritical(node) {
   }
   return someParentIsCritical(node[9]);
 }
-
+/**
+ * Marks the cost element critical
+ * @param {number} ce - Cost Element Id
+ */
 function markCritical(ce) {
   $(".opt_btn_wrp").hide();
   // showTimedMessage("gmsg", "Toggling cost element critical", 0, false);
@@ -26223,8 +25399,14 @@ function markCEEternal(ce, criticalp) {
     //,datatype: "json"
   });
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function eternalStepContents2() {
+  console.trace();
   body = "";
   body =
     body +
@@ -26621,8 +25803,14 @@ function getCEStatus(ce) {
   if (status == null) status = "";
   return status;
 }
-
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ * @param {number} pid - Person Id
+ */
 function mdStepContents2() {
+  console.trace();
   var disableUpdates = "";
   if (Gadmin == 0) disableUpdates = " disabled";
 
@@ -27516,7 +26704,11 @@ function addCDAtPosition(ce, pos) {
 }
 
 var editngSO = -1;
-
+/**
+ * called when edit strategic option mesaure and define step is clicked
+ * @param {number} ce - cost element id
+ * @param {number} cd - cost driver id
+ */
 function addEDSO(ce, cd) {
   $(".opt_btn_wrp").hide();
   var cdentry = getCDEntry(ce, cd);
@@ -27986,7 +27178,9 @@ function markSOForKeeps(ce, cd, soid) {
     //,datatype: "json"
   });
 }
-
+/**
+ * Called when edit primary cost button is clicked
+ */
 function editPrimaryCost() {
   $(".opt_btn_wrp").hide();
   $("#primarycost_modal").modal("show");
@@ -28093,8 +27287,13 @@ function activateButton(id) {
 function deactivateButton(id) {
   $("#" + id).removeClass("activeBtn");
 }
-
+/**
+ * Setting up the values for the strategy statement modal
+ * @param {number} ss - strategy statement id
+ */
 function setupUpdateVal(ss) {
+  console.trace();
+  console.log(ss);
   let allStrategies = Gcurrentdata[Grbindex];
   let currentStrategy = allStrategies.filter(function(strategies) {
     return strategies[0] == ss;
@@ -28168,7 +27367,9 @@ function setupUpdateVal(ss) {
   document.getElementById("vNumActions").innerHTML = actionCount + "";
   document.getElementById("vRealized").innerHTML = valueRealisedTotal;
 }
-
+/**
+ * Add value realized to a strategy statement
+ */
 function addNPVtoSS() {
   $("#update_val_modal").modal("hide");
   var val = document.getElementById("value_realized").value;
@@ -28270,7 +27471,10 @@ function deleteParticipant(perf) {
   );
   $(".opt_btn_wrp").hide();
 }
-
+/**
+ * Deletes a participant of a particular project
+ * @param {number} perf - Person Id
+ */
 function deleteParticipantInternal(perf) {
   $("#myconfirm_modal").modal("hide");
   $(".opt_btn_wrp").hide();
@@ -28447,6 +27651,9 @@ function getParentString(node) {
   return getParentString(parentNode) + sentinel + parentNode[0];
 }
 //individual report starts here
+/**
+ * Close Out Report of a project
+ */
 function refreshCOR() {
   criticalNodesToShow = [];
   temptable = [];
@@ -29698,6 +28905,12 @@ function refreshCOR() {
   //    });
 }
 // individual report ends
+/**
+ * Implement step HTML in close out report
+ * @param {object} obj - HTML document object
+ * @param {number} startkey - next element index
+ * @param {array} db_strategy - array with implement step data
+ */
 function addimplementpagebreak(obj, startkey, db_strategy) {
   var implement_strategy_table = $(obj).find(".implement_strategy_table");
   $(implement_strategy_table)
@@ -29779,7 +28992,12 @@ function addimplementpagebreak(obj, startkey, db_strategy) {
     }
   }
 }
-
+/**
+ * Reduce HTML in close out report
+ * @param {object} obj - HTML document object
+ * @param {number} startkey - Next element index
+ * @param {array} db_reducetable - array with reduce step data
+ */
 function addreducepagebreak(obj, startkey, db_reducetable) {
   var goal_table = $(obj).find(".reduce_table");
   $(goal_table)
@@ -29850,7 +29068,12 @@ function addreducepagebreak(obj, startkey, db_reducetable) {
     }
   }
 }
-
+/**
+ * Identify step HTML in close out report
+ * @param {object} obj - HTML document object
+ * @param {number} startkey - next element index
+ * @param {arrat} db_identifytable - array of cost elements and percentages
+ */
 function addidentifypagebreak(obj, startkey, db_identifytable) {
   var sec_body = $(obj).find(".cost_breakdown_list");
   $(sec_body).html("");
@@ -29932,6 +29155,12 @@ function addidentifypagebreak(obj, startkey, db_identifytable) {
     }
   }
 }
+/**
+ * Measure and Define HTML in close out report
+ * @param {object} obj - HTML document object
+ * @param {number} startkey - next element index
+ * @param {array} db_mdtable2 - cost elements, cost driver, strategic options array
+ */
 function addmdpagebreak(obj, startkey, db_mdtable2) {
   var sec_body = $(obj).find(".sec_body");
   var tempTable2 = `<table class="table measure_and_define">
@@ -30001,6 +29230,11 @@ function addmdpagebreak(obj, startkey, db_mdtable2) {
     }
   }
 }
+/**
+ * HTML for goals in close out report. Adds page break after every 13 goals
+ * @param {object} obj - html document object
+ * @param {number} startkey - next element index
+ */
 function addgoalpagebreak(obj, startkey) {
   var goal_table = $(obj).find(".goal_table");
   $(goal_table)
@@ -30049,13 +29283,7 @@ function addgoalpagebreak(obj, startkey) {
           .append(markup);
       }
     });
-
     clone_key = clone_key + 1;
-
-    //
-    //
-    //
-    //
     if (temptable.length > clone_key) {
       var section_clone = $(obj).clone();
       $(section_clone).insertAfter($(obj));
@@ -30063,167 +29291,13 @@ function addgoalpagebreak(obj, startkey) {
     }
   }
 }
-function refreshValueRealizedTrendLine() {
-  var myData = [];
-  let year = "";
-  let valuerRealized = 0;
-  for (var i = 0; i < Gcurrentdata[Grbindex].length; i++) {
-    var oentry = Gcurrentdata[Grbindex][i];
-    if (oentry == null) {
-      continue;
-    }
-    var ss = oentry[0];
-    var actualSavings = oentry[13];
-    if (actualSavings != null && actualSavings.length > 0) {
-      for (var fas = 0; fas < actualSavings.length; fas++) {
-        valueRealized = parseInt(actualSavings[fas][0]);
-        year = actualSavings[fas][1].split("-");
-        year = year[0];
-        myData.push({
-          year: year,
-          valueRealized: valueRealized
-        });
-      }
-    }
-  }
-  myData.sort(function(a, b) {
-    var keyA = a.year;
-    var keyB = b.year;
-    if (keyA < keyB) return -1;
-    if (keyA > keyB) return 1;
-    return 0;
-  });
-  var years = [];
-  var eachValueRealized = [];
-  var yearIndex = years.length;
-  let alreadyIndexed;
-  for (var key in myData) {
-    alreadyIndexed = years.indexOf(myData[key].year);
-    if (alreadyIndexed === -1) {
-      years[yearIndex] = myData[key].year;
-      eachValueRealized[yearIndex] = myData[key].valueRealized;
-      yearIndex++;
-    } else {
-      eachValueRealized[alreadyIndexed] += myData[key].valueRealized;
-    }
-  }
-
-  var thisYearRealized = eachValueRealized[0];
-  for (var lala in eachValueRealized) {
-    if (lala == 0) continue;
-    thisYearRealized += eachValueRealized[lala];
-    eachValueRealized[lala] = thisYearRealized;
-  }
-}
-function refreshValueRealizationByStrategy(startfrom) {
-  totalRevenueImprovement = 0;
-  totalCostSavings = 0;
-  totalValueDelivered = 0;
-  totalValueUndelivered = 0;
-  for (var i = startfrom; i < selectedSS.length; i++) {
-    var oentry = selectedSS[i];
-    var sshandle = oentry[12].substring(0, 7);
-    var performance = getSummaryPerformanceAlt(oentry);
-    performanceObj = performance[5];
-    if (performance == null) continue;
-    totalCostSavings += performanceObj.costImprovement;
-    totalRevenueImprovement += performanceObj.revenueImprovement;
-    var totalValue = performance[0] + performance[1];
-    var actualSavings = oentry[13];
-    if (actualSavings != null && actualSavings.length > 0) {
-      var rawValue = actualSavings[actualSavings.length - 1][0];
-      if (typeof rawValue == "string") rawValue = parseInt(rawValue);
-      totalValueDelivered += rawValue;
-      // totalValueUndelivered += (totalValue - rawValue);
-    }
-  }
-  document.getElementById("totalRevenueImprovement").innerHTML = CurrencyFormat(
-    totalRevenueImprovement,
-    GdefaultCurrency,
-    0,
-    "",
-    ","
-  );
-  document.getElementById("totalCostSavings").innerHTML = CurrencyFormat(
-    totalCostSavings,
-    GdefaultCurrency,
-    0,
-    "",
-    ","
-  );
-}
-function refreshProgressBarChart() {
-  var myLabels = [],
-    myValues = [],
-    myColors = [];
-
-  for (var i = 0; i < progressSSActions.length; i++) {
-    var item = progressSSActions[i];
-    myLabels.push(item[1]);
-    var percentageCompleted = 0;
-    if (item[2] != 0)
-      percentageCompleted = numberFormat((item[3] / item[2]) * 100, 0);
-    myValues.push(percentageCompleted);
-    var color = ongoingColor;
-    if (item[4] > 0) color = behindColor;
-    else if (percentageCompleted == 100) color = completedColor;
-    myColors.push(color);
-  }
-
-  var barChartData1 = {
-    labels: myLabels,
-    datasets: [
-      {
-        backgroundColor: myColors,
-        borderWidth: "1",
-        data: myValues
-      }
-    ]
-  };
-
-  var barConfig1 = {
-    type: "horizontalBar",
-    data: barChartData1,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-      scales: {
-        xAxes: [
-          {
-            stacked: true,
-            gridLines: {
-              offsetGridLines: false
-            },
-            maxBarThickness: 40,
-            ticks: {
-              fontFamily: "'Nunito', sans-serif"
-            },
-            scaleLabel: {
-              display: true,
-              labelString: "Completion Percentage"
-            }
-          }
-        ],
-        yAxes: [
-          {
-            stacked: true,
-            scaleLabel: {
-              display: true,
-              labelString: "Strategy Serial Number"
-            }
-          }
-        ]
-      }
-    }
-  };
-}
 function quarter_of_the_year(date) {
   var month = date.getMonth() + 1;
   return Math.ceil(month / 3);
 }
+/**
+ * Progress Report of a particular project
+ */
 function refreshProgressReport() {
   let loggedInUser = getFirstLast(Gusername);
   let loggedInUserName = loggedInUser[0].trim() + " " + loggedInUser[1].trim();
@@ -30692,9 +29766,7 @@ function refreshProgressReport() {
   `;
   body += yytemp;
   document.getElementById("mainbody").innerHTML = body;
-  refreshProgressBarChart();
-  refreshValueRealizedTrendLine();
-  refreshValueRealizationByStrategy(0);
+
   $(document).ready(function() {
     $("#Text1").on("keyup", function() {
       var value = $(this)
@@ -30882,7 +29954,6 @@ function refreshProgressReport() {
       index: 0
     }
   ];
-
   $(function() {
     $(".cus_scroll").overlayScrollbars({});
     if (VRxAxis.length === 0) {
@@ -31119,7 +30190,12 @@ function refreshProgressReport() {
     Highcharts.chart("strategy_hbarchar_canvas", strategy_hbarchar_canvas);
   });
 }
+/**
+ * Get the company info when person id is given
+ * @param {number} pid - Person Id
+ */
 function getAllReportData() {
+  console.trace();
   manProjects = Gstrategies;
   allManProjectsData = [];
   allManProjectsDataTemp = [];
@@ -31142,28 +30218,47 @@ function retrieveNextStrategyDataWrapper() {
   $("#myconfirm_modal").modal("hide");
   retrieveNextStrategyData();
 }
+/**
+ * Filter reports by company
+ * @param {object} event - event changed
+ */
 function filterReportsByClient(event) {
   let selected = event.value;
   selectedClientReports = selected;
   setManagementReports();
 }
+/**
+ * Filter reports by supplier
+ * @param {object} event - event changed
+ */
 function filterReportsBySupplier(event) {
   let selected = event.value;
   selectedSuppReports = selected;
   setManagementReports();
 }
+/**
+ * Filter reports by region
+ * @param {object} event - event changed
+ */
 function filterReportsByRegion(event) {
   let selected = event.value;
   selectedRegionReports = selected;
   setManagementReports();
 }
-function filterReportsByYear(event) {}
+/**
+ * Filter reports by department
+ * @param {object} event - event changed
+ */
 function filterReportsByDept(event) {
   let selected = event.value;
   selectedDeptReports = selected;
   setManagementReports();
 }
+/**
+ * HTML for all reports prepared
+ */
 function setManagementReports() {
+  console.trace();
   let abc =
     selectedClientReports !== "all" ? clientProjs[selectedClientReports] : [];
   let bcd = selectedDeptReports !== "all" ? depProjs[selectedDeptReports] : [];
