@@ -69,7 +69,7 @@ session_start();
                <!-- right sec -->
                <div class="col-lg-6 col-sm-6 col-sm-6 login_right_sec">
                   <div class="login_form_container">
-                     <h4 class="page_head">Login</h4>
+                     <h4 class="page_head">Login NEW CHANGE</h4>
                      <div class="form_wrp">
                         <div class="input_wrp">
                            <input type="text" class="textbox" name="email" id="email" required id="" onkeyup="">
